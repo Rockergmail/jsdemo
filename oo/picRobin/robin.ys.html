@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>原生js面向对象封装版图片轮播</title>
+<link rel="stylesheet" type="text/css" href='common.css' />
+<style> 
+.wrapper{width:470px;height: 150px;overflow: hidden;position: relative;}
+.pics img{position: absolute;left: 0px;top:0px;opacity: 0;}
+.btns{position:absolute;right:12px;bottom:12px;color:white;margin:0px;padding:0px;}
+.btns li{display: inline-block;background-color:rgba(255,178,217,.8); text-align:center;line-height:1.5em;width:1.5em;height: 1.5em;border-radius: 0.75em;margin-right: 5px}
+li.active{background-color:rgba(255,0,0,.8);}
+
+</style>
+</head>
+<body>
+<div id='robin1' class='wrapper'>
+	<div class='pics'>
+		<img src='1.jpg' />
+		<img src='2.jpg' />
+		<img src='3.jpg' />
+		<img src='4.jpg' />
+		<img src='5.jpg' />
+	</div>
+	<ul class='btns'>
+		<li class='active'>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+	</ul>
+</div>
+<script>
+var oImg=document.getElementsByTagName('img');
+var oBtn=document.getElementsByTagName('li');
+
+var now=0;
+var alpha=0;
+
+	function effect(){
+		alpha=0;
+		var oEffect=setInterval(function(){
+			if(alpha>=98){
+				alpha=98;
+				clearInterval(oEffect);
+			}
+			alpha+=2;
+			oImg[now].style.opacity=alpha/100;
+		},20);
+	}
+
+	//btn_auto
+	function btnauto(){
+		for(var i=0;i<oBtn.length;i++){
+			oBtn[i].className='';
+			oBtn[i].index=i;
+			oImg[i].style.opacity=0;
+			//mouse over
+			oBtn[i].onmouseover=function(){
+				clearInterval(window.oAuto);
+				for(var k=0;k<oBtn.length;k++){
+					oBtn[k].className='';
+					oImg[k].style.opacity=0;
+				}
+				now=this.index;
+				effect();
+				oBtn[now].className='active';
+				return false;
+			};
+			//mouse out
+			oBtn[i].onmouseout=function(){
+				autoplay();
+				return false;
+			}
+			
+		}
+		oBtn[now].className='active';
+	}
+
+	//autoplay
+	function autoplay(){
+		 oAuto=setInterval(function(){
+			++now;
+			now=now>4?0:now;
+			effect();
+			btnauto();
+		},2000);
+	}
+
+		effect();
+		autoplay();
+		btnauto();
+
+</script>
+</body>
+</html>

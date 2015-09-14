@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>原生js面向对象封装版图片轮播</title>
+<style> 
+.wrapper{width:470px;height: 150px;overflow: hidden;position: relative;}
+.pics img{position: absolute;left: 0px;top:0px;opacity: 0;}
+.btns{position:absolute;right:12px;bottom:12px;color:white;margin:0px;padding:0px;}
+.btns li{display: inline-block;background-color:rgba(255,178,217,.8); text-align:center;line-height:1.5em;width:1.5em;height: 1.5em;border-radius: 0.75em;margin-right: 5px}
+li.active{background-color:rgba(255,0,0,.8);}
+
+</style>
+</head>
+<body>
+<div id='rocker'></div>
+<hr/>
+<div id='roll'></div>
+<hr/>
+<div id='and'></div>
+<script>
+function Robin(){
+	this.oWrapper=null;//最外层容器
+	this.oDiv=null;  //图片容器
+	this.oPic=null; //
+	this.oUl=null;	//按钮容器
+	this.oLi=null;	//按钮列表
+	this.imgurl=[];	//图片列表
+	this.count=0;
+	this.now=0; //当前图片
+	this.alpha=0;//初始化alpha
+	this.effectTimer=null;
+	this.playTimer=null;
+}
+
+Robin.prototype={
+	//constructor:Robin,
+	//选择或创建元素
+	$:function(obj){
+		if(typeof(obj)=='string'){
+		//例如$('#test')
+			if(obj.indexOf('#')>=0){
+				obj=obj.replace('#','');	
+				if(document.getElementById(obj)){
+					return document.getElementById(obj);
+				}
+				else{
+					alert('没有容器'+obj);
+					return null;
+				}
+			}
+			else{
+				return document.createElement(obj);
+				//例如$('div')就是创建div
+			}
+		}
+		else{
+			return obj;
+			//例如$(this)
+		}
+	}, 
+	//初始化
+	create:function(id){  //创建元素
+		this.count=(this.count>1)?this.count:2;
+		
+		if(this.imgurl.length<2){
+			alert('at least 2 pics');
+			return false;
+		}
+		var oBody=document.getElementsByTagName('body')[0];
+		this.oWrapper=this.$(id);
+		this.oWrapper.className='wrapper '+id;
+		//this.oWrapper.className='wrapper';
+
+		this.oDiv=this.$('div');
+		this.oDiv.className='pics '+id;
+		//this.oDiv.className='pics';
+		
+		var aPic=[];
+		var aLi=[];
+		for(var x=0;x<this.count;x++){
+			var pic=document.createElement('img');
+			pic.src=this.imgurl[x];
+			aPic.push(pic);
+			this.oDiv.appendChild(pic);
+		}
+		this.oPic=aPic;
+
+		this.oUl=this.$('ul');
+		this.oUl.className='btns '+id;
+		//this.oUl.className='btns';
+		
+		for(var a=0;a<this.count;a++){
+			var li=document.createElement('li');
+			if(a==0) li.className='active';
+			li.id=id+a;
+			li.innerHTML=a+1;
+			aLi.push(li);
+			this.oUl.appendChild(li);
+		}
+		this.oLi=aLi;
+
+		this.oWrapper.appendChild(this.oDiv);
+		this.oWrapper.appendChild(this.oUl);
+		oBody.appendChild(this.oWrapper);
+	},
+	//effect 
+	effect:function(){
+		var _this=this;
+		this.alpha=0;
+		this.effectTimer=setInterval(function(){  
+			if(_this.alpha>=98){
+				_this.alpha=98;
+				clearInterval(_this.effectTimer); 
+			}
+			_this.alpha+=2;
+			_this.oPic[_this.now].style.opacity=_this.alpha/100;
+		},20);
+	},
+
+	//btnauto
+	btnauto:function(){
+		var _this=this;
+		for(var i=0;i<this.oLi.length;i++){
+			this.oLi[i].className='';
+			this.oLi[i].index=i;
+			this.oPic[i].style.opacity=0;
+			//mouse over
+			this.oLi[i].onmouseover=function(){
+				clearInterval(_this.playTimer);
+				for(var k=0;k<_this.oLi.length;k++){
+					_this.oLi[k].className='';
+					_this.oPic[k].style.opacity=0;
+				}
+				_this.now=this.index;
+				_this.effect();
+				_this.oLi[_this.now].className='active';
+			};
+			//mouse out
+			this.oLi[i].onmouseout=function(){
+				clearInterval(_this.playTimer);
+				_this.autoplay();
+			}
+			
+		}
+		this.oLi[this.now].className='active';
+		//console.log(this);
+	},
+
+	//autoplay
+	autoplay:function(){
+		var _this=this;
+		this.playTimer=setInterval(function(){
+			++_this.now;
+			_this.now=_this.now>_this.count-1?0:_this.now;
+			_this.effect();
+			_this.btnauto();
+		},2000);
+	},
+
+	action:function(){
+		this.effect();
+		this.btnauto();
+		this.autoplay();
+	}
+}
+
+
+var xxx=new Robin();
+xxx.count=2;
+xxx.imgurl=[
+'4.jpg',
+'5.jpg'
+];
+xxx.create('#rocker');
+xxx.action();
+
+var yyy=new Robin();
+yyy.count=3;
+yyy.imgurl=[
+'1.jpg',
+'2.jpg',
+'3.jpg'
+];
+yyy.create('#roll');
+yyy.action();
+
+var zzz=new Robin();
+zzz.count=5;
+zzz.imgurl=[
+'1.jpg',
+'2.jpg',
+'3.jpg',
+'4.jpg',
+'5.jpg'
+];
+zzz.create('#and');
+zzz.action();
+</script>
+</body>
+</html>
