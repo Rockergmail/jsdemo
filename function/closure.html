@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8" />
+<title>Closure Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<script>
+//例子一
+function createFunctions(){
+	var result=new Array();
+	for(var i=0;i<10;i++){
+		result[i]=function(){console.log(i);};
+	}
+	console.log(result);
+	return result;
+}
+
+var test=createFunctions();
+console.log(test);
+for(var k=0;k<test.length;k++){
+	test[k]();   //all are 10，因为createFunctions执行完之后，i为10，里面的函数引用的是createFunctions的活动对象的值（其中的i就是10），所以会有这个结果
+}
+
+console.log('===========================');
+//例子二
+function createFunctions2(){
+	var result=new Array();
+	for(var i=0;i<10;i++){
+		result[i]=function(num){
+			return function(){
+				console.log(num);
+			}
+			//chrome的developer tools中，右击函数show function definition指向的是console.log(num)所在的匿名函数!就是说，自执行函数不算是赋值，而赋值的时候自执行函数之后的结果
+			//为什么这样做就可以0-9的输出？里面的函数和自执行的函数变成了普通的赋值函数，自执行函数传入的值i，执行完过后，自执行函数的执行环境销毁。
+			
+			//自执行函数的执行环境以及变量销毁、形参的销毁的问题？？？
+			
+			//↑↑↑↑↑要验证一下！！！
+		}(i);
+	}
+	console.log(result);
+	return result;
+}
+
+var test2=createFunctions2();
+console.log(test2);
+for(var k=0;k<test2.length;k++){
+	test2[k]();   //为什么这样就可以调用了、而不是test2[k]()()
+}
+</script>
+</body>
+</html>
