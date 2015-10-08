@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8" />
+<title>this</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<script>
+var name='The Window';
+var object={
+	name:'My Object',
+	getNameFunc:function(abc,def){
+		//这里的this才是object本身的
+		return function(){
+			//这里的this要看看谁调用了
+			return this.name;
+		}
+	}
+}
+console.log(object.getNameFunc()()); //The Window
+console.log(window.object.getNameFunc()()); //跟上面的等效
+console.log(object.getNameFunc('bithc')['arguments']);
+//问题一：如何调用才能显示My Object?
+//getNameFunc:function(){
+//		var _this=this;
+//		return function(){return _this.name;}}
+//或者
+//getNameFunc:function(){
+//		return this.name} //这里的this指向object
+
+//问题二：为什么这么写，不是调用object对象，而是window对象？怎么样才算是调用object对象？
+//getNameFunc的this就是指向object的，但是它里面的函数的this不是。
+//console.log(object.getNameFunc());
+
+//问题三：如何访问函数里面的arguments对象？
+//getNameFunc:function(){
+//		var myArgs=arguments;
+//		return function(){return myArgs;}}
+
+console.log('=====================');
+
+
+//知识点：用apply，call,bind来指定this对应的对象
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8" />
+<title>function expression</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<script>
+//===函数定义的三种方法===
+//1.函数声明
+function test(){console.log('this is test1')}
+test();  //it works
+test2();  //it works too
+//函数声明的特征：函数声明提升，意味着执行该函数的时候，会先去读取函数声明
+function test2(){console.log('this is test2')}
+
+//2.函数表达式
+var functionName=function(){console.log('this is test3')}
+functionName();
+//functionName2();
+//出错！Uncaught TypeError: functionName2 is not a function
+var functionName2=function(){console.log('this is test4')}
+//函数表达式是没有函数声明提升的，这就是函数声明和函数表达式 的区别
+
+//3.实例化Function对象
+var test5=new Function('a','b','return a+b');
+console.log(test5(5,6)); //11
+//不推荐使用这种方法，因为性能比较低，在执行的时候，会有两次的解析，第一次是ecma的new Function的解析，第二次是对传入字符串的解析
+</script>
+</body>
+</html>

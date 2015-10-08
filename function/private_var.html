@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8" />
+<title>private var</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<script>
+function MyObject(){
+	var privateVariable=10;
+	function privateFunction(){
+		return false;
+	}
+	
+	this.publicMethod=function(){
+		privateVariable++;
+		return privateFunction();
+	}
+}
+
+var test=new MyObject();
+console.log(test.privateVariable); //实例中，不能访问构造用var定义的变量和函数
+
+</script>
+</body>
+</html>

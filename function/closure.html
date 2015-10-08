@@ -29,7 +29,9 @@ function createFunctions2(){
 	var result=new Array();
 	for(var i=0;i<10;i++){
 		result[i]=function(num){
+			console.log(this); //竟然是window!匿名函数的执行环境是window!!!所以它的this是window
 			return function(){
+				//这里的this是谁?
 				console.log(num);
 			}
 			//chrome的developer tools中，右击函数show function definition指向的是console.log(num)所在的匿名函数!就是说，自执行函数不算是赋值，而赋值的时候自执行函数之后的结果
@@ -49,6 +51,24 @@ console.log(test2);
 for(var k=0;k<test2.length;k++){
 	test2[k]();   //为什么这样就可以调用了、而不是test2[k]()()
 }
+
+console.log('=====================');
+//实例三
+function makeCounter(){
+	var i = 0;
+	return function(){
+		console.log(++i);
+	}
+}
+
+//不同实例有不同的范围
+var counter=makeCounter();
+counter(); //1
+counter();  //2
+
+var counter2=makeCounter();
+counter2();  //1
+counter2();  //2
 </script>
 </body>
 </html>

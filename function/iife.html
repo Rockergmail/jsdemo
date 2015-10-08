@@ -8,8 +8,35 @@
 <body>
 <script>
 //iife=immediately-invoked-function-expression
+//the kernal question is the ()
+
+//function(){console.log('this is IIF')}() ;
+//Uncaught SyntaxError: Unexpected token (
+//表示语法出错，不能这样实现自执行。因为有function关键字，代表声明函数，声明函数的语法}后面不能有()；
+
+(function(){
+	console.log('this is IIFE')}
+)();  //it works
+//因为最外围的()意味着里面变成了表达式
 
 
+(function(){
+	console.log('this is IIFE')}
+());  //it works too
+
+//实例一：模仿块级作用域
+function outputNumbers(count){
+	(function(){
+		for(var i=0;i<count;i++){
+			console.log(i);
+		}
+	})();
+	//原理，自执行函数执行完之后，会自动销毁。
+	console.log(i); 
+	//Uncaught ReferenceError: i is not defined
+}
+
+outputNumbers(10);
 </script>
 </body>
 </html>

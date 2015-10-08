@@ -1,0 +1,33 @@
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8" />
+<title>window</title>
+<script>
+//8.1.1全局作用域
+
+var age=22;
+window.color='red';
+console.log(delete window.age);  //false
+console.log(delete window.color);	//true
+console.log(window.age);	//22
+console.log(window.color);	//undefined
+
+//var newValue=oldValue;  
+//Uncaught ReferenceError: oldValue is not defined
+var newValue=window.oldValue; //undefined;
+console.log(newValue);
+
+//8.1.2窗口关系及框架
+
+
+
+</script>
+</head>
+<frameset rows='160,*'>
+	<frame src='frame1.html' name='topFrame'>
+	<frameset cols='50%,50%'>
+		<frame src='frame2.html' name='leftFrame'>
+		<frame src='embedFrame.html' name='rightFrame'>
+	</frameset>
+</frameset>
+</html>
