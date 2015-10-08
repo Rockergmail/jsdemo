@@ -9,18 +9,20 @@
 <script>
 //闭包：有权访问另外一个函数作用域内的变量的函数
 //创建闭包：在函数里面创建另外一个函数，这里面的函数就是闭包
-/例子一
+//闭包的特点：闭包会引用包含函数（外部函数）的活动对象，当外部函数执行完之后，外部函数的作用域链会被销毁，但是外部函数的活动对象（在这里就是变量对象）仍然在闭包的作用域链上，所以外部函数被引用的变量还未销毁。所以闭包会比其他的函数占用更多内存。
+
+//例子一
 function createFunctions(){
 	var result=new Array();
 	for(var i=0;i<10;i++){
-		result[i]=function(){console.log(i);};
+		result[i]=function(){console.log(i);};//闭包，所以i是引用！
 	}
-	console.log(result);
 	return result;
 }
 
 var test=createFunctions();
 console.log(test);
+
 for(var k=0;k<test.length;k++){
 	test[k]();   //all are 10，因为createFunctions执行完之后，i为10，里面的函数引用的是createFunctions的活动对象的值（其中的i就是10），所以会有这个结果
 }
@@ -28,21 +30,18 @@ for(var k=0;k<test.length;k++){
 console.log('===========================');
 //例子二
 function createFunctions2(){
+	console.log(this);
 	var result=new Array();
 	for(var i=0;i<10;i++){
 		result[i]=function(num){
-			console.log(this); //竟然是window!匿名函数的执行环境是window!!!所以它的this是window
+			console.log(this); 
 			return function(){
-				//这里的this是谁?
-				console.log(num);
+				console.log(num); 
+				//为什么这样就可以存储num值了？不是说销毁了吗，就是说在内存上已经写了那个值了
 			}
 			//chrome的developer tools中，右击函数show function definition指向的是console.log(num)所在的匿名函数!就是说，自执行函数不算是赋值，而赋值的时候自执行函数之后的结果
 			//为什么这样做就可以0-9的输出？里面的函数和自执行的函数变成了普通的赋值函数，自执行函数传入的值i，执行完过后，自执行函数的执行环境销毁。
-			
-			//自执行函数的执行环境以及变量销毁、形参的销毁的问题？？？
-			
-			//↑↑↑↑↑要验证一下！！！
-		}(i);
+		}(i);//对比一下自执行函数的写法，这个能够成功时因为a=b这种形式本来就是表达式形式
 	}
 	console.log(result);
 	return result;

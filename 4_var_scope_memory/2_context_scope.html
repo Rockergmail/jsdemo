@@ -1,0 +1,60 @@
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8" />
+<title></title>
+<body>
+<script>
+/*
+执行环境：
+定义变量或函数有权访问的其他数据，决定了它们各自的行为。
+当执行环境中的代码执行完毕，就该环境会被销毁，如果是全局环境，则关闭浏览器才会销毁。
+当执行流进入一个函数的时候，函数的环境就会被推入一个环境栈中，执行完之后，栈将其环境弹出。
+
+变量对象：
+每个执行环境对有一个变量对象相关联，环境中定义的变量和函数都保存在这个对象中，不能访问，存在于后台
+
+活动对象：
+如果这个环境是函数，活动对象就是变量对象。
+最开始时只保存一个初始变量：arguments对象（如果在全局环境下，活动对象是没有arguments对象的）
+
+作用域链：
+当进入一个执行环境，就会创建变量对象的作用域链，作用域链中下一个变量对象来自包含环境，再下一个变量对象是再下一个包含环境，直接到全局执行环境（它是作用域链的最后一个对象）。
+内部环境可以通过作用域链访问外部环境，但是外部环境不能访问内部环境的属性或函数。
+就是说作用域链的本质是变量对象的指针列表。
+它的作用是保证对执行环境有权访问的所有变量和函数的有序访问。
+当第一次调用某个函数，会创建一个执行环境和作用域链，把作用域链赋值给一个内部属性[[Scope]]
+*/
+
+//实例一：
+var color='blue';
+function changeColor(){
+	if(color==='blue'){
+		color='red';
+	} else {
+		color='blue';
+	}
+}
+
+changeColor();
+console.log('color is now :'+color); //red
+
+//实例二：
+var color2='blue';//全局环境--执行环境1：只可以访问color2
+function changeColor2(){
+	//执行环境2:只可以访问anotherColor和color2
+	var anotherColor='red';
+	function swapColors(){
+		//执行环境3:能访问环境2和环境1的变量:可以访问tempColor,anotherColor,color2
+		var tempColor=anotherColor;
+		anotherColor=color2;
+		color2=tempColor;
+	}
+
+	swapColors();
+}
+changeColor2(); //red
+console.log(color2);
+
+</script>
+</head>
+</html>
