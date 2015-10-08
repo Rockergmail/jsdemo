@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8" />
+<title>function expression</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<script>
+//递归函数：调用自身的函数
+function factorial(num){
+	if( num <= 1 ){
+		return 1;
+	} else {
+		return num * factorial(num-1); //不可靠，因为当othername=factorial,factorial=null时，就不能指定了本身了
+	}
+}
+
+var anotherFactorial=factorial;
+factorial=null;
+//console.log(anotherFactorial(3));
+//Uncaught TypeError: factorial is not a function
+
+//=============================================================
+
+function factorial2(num){
+	if( num <= 1 ){
+		return 1;
+	} else {
+		return num * arguments.callee(num-1); //比较可靠，因为arguments的callee指定的时本函数自己,但是在严格模式下就不可行了
+	}
+}
+
+console.log(factorial2(3));
+//如果用了'use strict'
+//Uncaught TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to the
+
+//=============================================================
+
+var factorial3=(function f(num){
+	if( num <= 1 ){
+		return 1;
+	} else {
+		return num * f(num-1);
+		//最可靠，非严格模式或者严格模式下都可以，()表示里面的是表达式，这个表达式的内容是一个函数声明，这样的好处是防止了f()所在的作用域以外被引用。
+	}
+});
+
+console.log(factorial3(3)); //it works !!!
+console.log(f(3));
+//Uncaught ReferenceError: f is not defined
+</script>
+</body>
+</html>

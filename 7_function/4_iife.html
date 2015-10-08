@@ -14,16 +14,22 @@
 //Uncaught SyntaxError: Unexpected token (
 //表示语法出错，不能这样实现自执行。因为有function关键字，代表声明函数，声明函数的语法}后面不能有()；
 
+
+//将函数声明用()套住，就变成了函数表达式
+//这种方式的好处时可以减少闭包占用的内存问题
 (function(){
+	//这里是块级作用域
 	console.log('this is IIFE')}
 )();  //it works
 //因为最外围的()意味着里面变成了表达式
 
 
 (function(){
+	//这里是块级作用域
 	console.log('this is IIFE')}
 ());  //it works too
 
+//js中没有块级作用域
 //实例一：模仿块级作用域
 function outputNumbers(count){
 	(function(){
