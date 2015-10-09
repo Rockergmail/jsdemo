@@ -7,7 +7,10 @@
 </head>
 <body>
 <script>
-//this对象是在运行时基于函数的执行环境绑定的，就是说this对象的指定时跟当前执行环境有关，当函数被某个对象的方法
+/*
+this对象是在运行时基于函数的执行环境绑定的，就是说this对象的指定是跟当前执行环境有关。
+当函数被某个对象调用时，this就是指向这个对象。
+*/
 var name='The Window';
 var object={
 	name:'My Object',
@@ -21,7 +24,6 @@ var object={
 }
 console.log(object.getNameFunc()()); //The Window
 console.log(window.object.getNameFunc()()); //跟上面的等效
-console.log(object.getNameFunc('bithc')['arguments']);
 //问题一：如何调用才能显示My Object?
 //getNameFunc:function(){
 //		var _this=this;

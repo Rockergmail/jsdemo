@@ -12,7 +12,7 @@
 
 //function(){console.log('this is IIF')}() ;
 //Uncaught SyntaxError: Unexpected token (
-//表示语法出错，不能这样实现自执行。因为有function关键字，代表声明函数，声明函数的语法}后面不能有()；
+
 
 
 //将函数声明用()套住，就变成了函数表达式
@@ -43,6 +43,68 @@ function outputNumbers(count){
 }
 
 outputNumbers(10);
+
+var foo=function _foo(){
+	console.log('u like me');
+};
+foo();
+//_foo();
+//Uncaught ReferenceError: _foo is not defined
+
+//表达式的函数如果有名字，在外面时是不可以被调用的。在里面就可以被调用（递归函数）
+//function expression has its own scope! can not use by outside but inside
+//foo--_foo这样的对应关系
+
+// in parentheses (grouping operator) can be only an expression
+(function foo() {});
+ 
+ // in the array initialiser – also only expressions
+ [function bar() {}];
+  
+  // comma also operates with expressions 
+  1, function baz() {}; 
+
+  //为什么要用(function yoyocheck(){console.log('hihop')})：就是因为防止污染变量对象！
+  var a=function(){console.log('axax')}  //这种会污染变量对象，因为引用给了一个变量
+
+/*
+function () {
+  ...
+  }();
+  //语法出错：因为function时关键字，所以是函数声明，因为要有一个名字，所以会出错
+    
+	function foo() {
+	  ...
+	  }();
+	//语法出错：在声明后面的()表示分组操作符，里面必须要有内容，分租操作符是没有调用函数的功能的。
+
+	if (true) function foo() {alert(1)}
+	//语法错误，因为表示式不能以function开头
+	
+//立刻执行，必须是要function expression，所以，一般情况下，要有(function(){...})()这种形式，就时说，(function(){...})这样子就变成了函数表达式形式。这样子，编译器才能够识别到表达式，随后的()就会解释成调用。但是下面这种情况除外，因为本来就是表达式形式了
+	  */
+	  var foo={
+	  	bar:function(x){
+			return x%2!=0?'yes':'no';
+		}(1) //这里的1是实参
+	  };
+
+	  console.log(foo.bar);
+
+/*IIFE的两种常用表现方式：
+(function () {})();
+(function () {}());
+*/
+1, function () { //逗号操作符，然后后面的就变成了表达式
+  alert('anonymous function is called');
+  }();
+   
+   // or this one
+   !function () { 
+     alert('ECMAScript');
+	 }();
+
+
 </script>
 </body>
 </html>
