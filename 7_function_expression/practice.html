@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        #div1,#div2,#div3 {
+    width: 200px;
+    height: 200px;
+    background: red;
+    margin: 10px;
+}
+    </style>
+</head>
+
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+    <div id="div3"></div>
+    <script type="text/javascript">
+     //问题在这里：
+
+    /*
+        var timer = null;
+        oDiv = document.getElementsByTagName("div");
+
+        function test(i) {
+            timer = setInterval(function() {
+                oDiv[i].style.height = oDiv[i].offsetHeight + 2 + 'px'
+            }, 30)
+        };
+        for (var i = 0; i < 3; i++) {
+            oDiv[i].onmouseover = function() {
+                test(i);
+            }
+            oDiv[i].onmouseout = function() {
+                clearInterval(timer);
+            }
+        }
+    */
+
+    //===================================================================
+
+    /*
+        var timer = null;
+        oDiv = document.getElementsByTagName("div");
+
+        for (var i = 0; i < 3; i++) {
+            oDiv[i].onmouseover = function() {
+                var _this=this;
+                timer = setInterval(function() {
+                  _this.style.height = _this.offsetHeight + 2 + 'px'
+            }, 30);
+            //方法一：避免在闭包里面引用外包函数的变量，用this来代替
+            }
+            oDiv[i].onmouseout = function() {
+                clearInterval(timer);
+            }
+        }
+    */
+
+    //===================================================================
+
+    /*
+        var timer = null;
+        oDiv = document.getElementsByTagName("div");
+
+        for (var i = 0; i < 3; i++) {
+            oDiv[i].onmouseover = function() {
+                timer = setInterval(function() {
+                  this.style.height = this.offsetHeight + 2 + 'px'
+            }.bind(this), 30);
+            //方法一改良
+            }
+            oDiv[i].onmouseout = function() {
+                clearInterval(timer);
+            }
+        }
+    */
+
+    //===================================================================
+
+    /*
+        var timer = null;
+        oDiv = document.getElementsByTagName("div");
+
+        function test(i) {
+            timer = setInterval(function() {
+                oDiv[i].style.height = oDiv[i].offsetHeight + 2 + 'px'
+            }, 30)
+        };
+        for (var i = 0; i < 3; i++) {
+            oDiv[i].onmouseover = function(num){
+                return function() {
+                    test(num);
+                }
+            }(i);
+            //方法二：用iife来替换，事实上，就是用iife的形参作为桥梁在两个作用域之间传值
+            oDiv[i].onmouseout = function() {
+                clearInterval(timer);
+            }
+        }
+    */
+
+    //===================================================================
+
+    //方法三
+    (function(){
+    var timer = null,
+        onMouseOver = function(){
+            var obj = this;
+
+            timer = setInterval(function() {
+                obj.style.height = obj.offsetHeight + 2 + 'px';
+                obj = null;
+            }, 30);
+        },
+        onMouseOut = function(){
+            clearInterval(timer);
+        },
+        oDiv = document.getElementsByTagName("div");
+
+    for (var i = oDiv.length; i--; ) {
+        oDiv[i].onmouseover = onMouseOver;
+        oDiv[i].onmouseout = onMouseOut;
+    }
+    })();
+   
+    </script>
+</body>
+
+</html>
