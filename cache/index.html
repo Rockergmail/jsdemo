@@ -1,0 +1,41 @@
+<html lang="en" manifest="test.manifest">
+<link rel='stylesheet' type='text/css' href='test.css'>
+</head>
+<body>
+<h1>Rock</h1>
+<p>this is test</p>
+ <div id="msg"></div>
+<input type="text" id="input" />
+        <input type="button" value="Save Data" onclick="saveData('input')" />
+        <input type="button" value="Get Data" onclick="getData('msg')" />
+
+ <div id="msg2"></div>
+<input type="text" id="input2" />
+        <input type="button" value="Save Data" onclick="saveData2('input2')" />
+        <input type="button" value="Get Data" onclick="getData2('msg2')" />
+<img src='1.jpg' />
+
+<script>
+function saveData2(id)
+{
+    var txt = document.getElementById(id);
+    localStorage.setItem('data2',txt.value);
+}
+function getData2(id)
+{
+    var msg = document.getElementById(id);
+    msg.innerHTML = localStorage.getItem('data2');
+}
+function saveData(id)
+{
+    var txt = document.getElementById(id);
+    sessionStorage.setItem('data',txt.value);
+}
+function getData(id)
+{
+    var msg = document.getElementById(id);
+    msg.innerHTML = sessionStorage.getItem('data');
+}
+</script>
+</body>
+</html>
