@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<title>DOM</title>
+<meta charset="utf-8" />
+<title></title>
+<body>
+some text here
+<script>
+var html=document.documentElement;
+console.log(html);//html元素
+console.log(document.childNodes); //[<!DOCTYPE html>, html]
+console.log(html === document.childNodes[1]);
+
+var body=document.body;
+console.log(body);
+
+var doctype=document.doctype; //chrome,ie9+可以，firefox不支持，ie8-为null(视作注释)
+console.log(doctype);
+
+var title=document.title;
+console.log(title); //DOM
+title='ROCK DOM'; 
+console.log(title); //ROCK DOM，虽然在js里面输出改变了，但在网页上没改！
+title.innerHTML='aaa';
+
+var url=document.URL;
+console.log(url);
+
+var domain=document.domain;
+console.log(domain);
+
+var referrer=document.referrer;
+console.log(referrer);
+
+document.write('you really suck'); //没有\n
+document.writeln('you really suck'); //有\n,效果后面多了一个空格
+window.onload=function(){
+    document.write('you are what'); //加载完文档后，如果调用这个函数，会重写整个网页
+}
+
+</script>
+some text here
+</body>
+</head>
+</html>

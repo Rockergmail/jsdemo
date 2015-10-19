@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html id='myhtml' lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8" />
+<title></title>
+<body>
+<ul id='myul'>
+    <li id='li1'>1</li>
+    <li>2</li>
+    <li id='li3'>3</li>
+</ul>
+<script>
+//将childNodes转换为array
+var myhtml=document.getElementById('myhtml');
+var myChildNodes=myhtml.childNodes;
+console.log(myChildNodes);
+console.log(Array.isArray(myChildNodes)); //false
+
+var aHtml=Array.prototype.slice.call(myChildNodes,0);
+console.log(aHtml);
+console.log(Array.isArray(aHtml)); //true
+console.log(Object.prototype.toString.call(aHtml));
+//to judge a array
+//Object.prototype.toString.call(arg) === '[object Array]';
+
+//change to array 
+//The slice() method returns a shallow copy of a portion of an array into a 
+//new array object.
+
+var myUl=document.getElementById('myul');
+var li1=document.getElementById('li1');
+var li3=document.getElementById('li3');
+myUl.appendChild(li1);
+myUl.removeChild(li3);
+console.log(li3); //没报错！就是说还是存在的
+
+var newF=document.createDocumentFragment();
+newF.appendChild(li1);
+myUl.appendChild(newF);
+console.log(li1);
+newF.removeChild(li1);
+console.log(li1);  //报错！
+//Uncaught NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+
+</script>
+</body>
+</head>
+</html>

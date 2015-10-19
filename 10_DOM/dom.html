@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#myDiv{
+	color:red;
+}
+</style>
+</head>
+<body>
+<div id='myDiv' align='left' rock='roll' style='width:100px; height:1em;background-color:red' onclick='javascript:alert("damn good")'>rock and roll</div>
+<input type='checkbox' checked='true' id='myInput' name='test'/>
+<ul id='outerUl'>
+    <li>item1
+        <ul id='innerUl'>
+            <li>keep</li>
+            <li>rock:</li>
+        </ul>
+    </li>
+    <div><li>what</li></div>
+    <li>item2</li>
+    <li>item3</li>
+</ul>
+
+<script>
+var oDiv=document.getElementById('myDiv');
+console.log(oDiv.id);
+console.log(oDiv.align);
+console.log(oDiv.rock); //ie9+:undefined ie8-:roll
+console.log(oDiv.getAttribute('rock'));
+console.log(oDiv.getAttribute('ROCK')); //不区分大小写
+console.log(oDiv.getAttribute('style'));  //返回style内联样式的字符串
+console.log(oDiv.style); //返回一个对象
+console.log(oDiv.style.height);
+console.log(oDiv.onclick);
+console.log(oDiv.getAttribute('onclick'));
+
+var oInput=document.getElementById('myInput');
+oInput.onclick=function(){
+	console.log(this.getAttribute('checked'));
+	console.log(this.checked);
+}
+
+//明显的是getAttribute返回的是字符串，而通过js的是一个布尔值，而且是动态显示的
+
+console.log(oInput.attributes); //NamedNodeMap {0: type, 1: checked, 2: id, 3: name}
+var id=oInput.attributes.getNamedItem('name').nodeValue; //等价于oInput.attributes['name'].nodeValue;
+console.log(id);
+
+function outputAttributes(element){
+     var pairs=new Array(),attrName,attrValue,i,len;
+     for(i=0,len=element.attributes.length;i<len;i++){
+         attrName=element.attributes[i].nodeName;
+         attrValue=element.attributes[i].nodeValue;
+         if(element.attributes[i].specified) //兼容ie7-，否则ie7-会输出所有包括未指定的属性,指定的特性节点中都有specified属性
+            pairs.push(attrName+'="'+attrValue+'"');
+     }
+     return pairs.join(' ');
+}
+
+console.log(outputAttributes(oInput));
+
+//var div=document.createElement('<div id="newDiv">newDDD</div>');
+
+var outerUl=document.getElementById('outerUl');
+console.log(outerUl.getElementsByTagName('li'));
+</script>
+</body>
+</html>
