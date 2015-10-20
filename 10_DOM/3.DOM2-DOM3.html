@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#myDiv{
+	color:red;
+    text-align:center;
+}
+</style>
+</head>
+<body>
+<div id='myDiv' align='left' rock='roll' style='width:100px; height:1em;background-color:red; color:yellow !important' onclick='javascript:alert("damn good")'>rock and roll</div>
+<input type='checkbox' checked='true' id='myInput' name='test'/>
+<ul id='outerUl' style='background:yellow;width:500px;height:300px;display:absolute;'>
+    <li>item1
+    <ul id='innerUl' style='background:lightyellow;'>
+            <li>keep</li>
+            <li>rock:</li>
+        </ul>
+    </li>
+    <div><li>what</li></div>
+    <li id='myLi' style='background:red;display:absolute'>item2</li>
+    <li>item3</li>
+</ul>
+
+<script>
+var myDiv=document.getElementById('myDiv');
+var outerUl=document.getElementById('outerUl');
+myDiv.style.float='right';
+console.log(outerUl.style);
+console.log(myDiv.style.cssText); //width: 100px; height: 1em; color: yellow !important; float: right; background-color: red;
+console.log(myDiv.style.length); //4
+console.log(myDiv.style.parentRule); //null
+//console.log(myDiv.style.getPropertyCSSValue('width')); //Only supported via getComputedStyle
+//console.log(myDiv.style.getPropertyPriority('color')); //important ie9+
+//console.log(myDiv.style.getPropertyValue('color')); //yellow ie9+
+//console.log(myDiv.style.item(2)); //background-color
+//console.log(myDiv.style.removeProperty('color'));
+//console.log(myDiv.style.setProperty('fontSize','1.5em','important')); //不生效why
+var prop,value,i,len;
+for(i=0,len=myDiv.style.length;i<len;i++){
+    prop=myDiv.style[i];  //myDiv.style.item(i);
+    value=myDiv.style.getPropertyValue(prop);
+    console.log(prop+':'+value);
+}
+
+console.log(myDiv.style.textAlign); //获取不了
+//console.log(document.defaultView.getComputedStyle(myDiv,null).textAlign); //center
+//console.log(myDiv.currentStyle.textAlign);
+
+function getCss(attr){
+    var style= this.currentStyle || document.defaultView.getComputedStyle(this,null);
+    return style[attr];
+}
+console.log(getCss.call(myDiv,'color'));
+console.log(myDiv.offsetParent);
+
+var innerUl=document.getElementById('innerUl');
+console.log(innerUl.offsetParent);
+console.log(innerUl.offsetTop);
+console.log(innerUl.offsetLeft);
+
+var myLi=document.getElementById('myLi');
+console.log(myLi.offsetLeft);
+console.log(document.documentElement.clientWidth);
+</script>
+</body>
+</html>

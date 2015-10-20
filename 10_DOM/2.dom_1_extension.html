@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<style>
+#myDiv{
+	color:red;
+}
+</style>
+</head>
+<body>
+<div id='myDiv' data-appid='ver1' data-myname='Rocker' align='left' rock='roll' style='width:100px; height:1em;background-color:yellow' onclick='javascript:alert("damn good")'>rock and roll</div>
+<input class='classA classB classC' type='checkbox' checked='true' id='myInput' name='test'/>
+<ul id='outerUl' class='ulA ulB ulC'>
+    <li>item1</li>
+    <!-- 米甘搞笑啦 -->
+    <div id='innerDiv'><li>what</li></div>
+    <li>item2</li>
+    <li>item3</li>
+</ul>
+
+<script>
+var outerUl=document.getElementById('outerUl');
+var div=document.getElementById('myDiv');
+/*
+console.log(document.querySelector('li')); //只是返回第一个
+console.log(document.querySelectorAll('li'));
+
+var outerUl=document.getElementById('outerUl');
+console.log(outerUl.childNodes);
+console.log(outerUl.firstChild);
+console.log(outerUl.firstElementChild);
+
+//del className
+var oInput=document.getElementById('myInput');
+var yourclass=oInput.className.split(/\s+/);
+var pos=-1;
+for(var i=0;i<yourclass.length;i++){
+    if(yourclass[i]=='classB'){
+        pos=i;
+        break;
+    }
+}
+yourclass.splice(pos,1); //原数组也会删除
+console.log(yourclass);
+oInput.className=yourclass.join(' ');
+console.log(oInput.className);
+
+//del className with HTML5 new function
+outerUl.classList.remove('ulA');
+
+console.log(document.activeElement); //body
+console.log(document.hasFocus());
+
+console.log(document.readyState);
+console.log(document.compatMode);
+
+var var1=100;
+var var2=null||var1;
+console.log(var2);
+
+var div=document.getElementById('myDiv');
+var appid=div.dataset.appid;
+var myname=div.dataset.myname;
+console.log(div.dataset);
+console.log(appid);
+console.log(myname);
+div.dataset.appid='ver2';
+div.dataset.myname='Rocker Lau';
+console.log(div.dataset);
+console.log(document.documentElement.contains(document.body));
+var innerDiv=document.getElementById('innerDiv');
+console.log(outerUl.contains(innerDiv));
+div.innerHTML='Rock & Roll never <b>"DIE"</b>';
+
+var result=document.documentElement.compareDocumentPosition(document.body);
+console.log(!!(result & 16));
+*/
+console.log(outerUl.children);
+
+var title=document.getElementsByTagName('title')[0];
+div.innerHTML='ROCKER TEST';
+title.innerHTML='ROCKER TEST'; //IE8-不能进行对title的innerHTML
+
+console.log(document.implementation.hasFeature('CSS','2.0'));
+console.log(document.implementation.hasFeature('CSS2','2.0'));
+
+</script>
+</body>
+</html>

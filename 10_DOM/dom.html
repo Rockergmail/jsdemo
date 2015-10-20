@@ -64,6 +64,28 @@ console.log(outputAttributes(oInput));
 
 var outerUl=document.getElementById('outerUl');
 console.log(outerUl.getElementsByTagName('li'));
+
+function loadScript(url){
+    var script=document.createElement('script');
+    script.type='text/javascript';
+    script.src=url;
+    document.body.appendChild(script);
+}
+
+
+function loadStyleString(css){
+     var style=document.createElement('style');
+     style.type='text/css';
+     try{
+        style.appendChild(document.createTextNode(css));
+     } catch(ex){
+         style.styleSheet.cssText=css;
+     }
+     var head=document.getElementsByTagName('head')[0];
+     head.appendChild(style);
+}
+
+
 </script>
 </body>
 </html>
