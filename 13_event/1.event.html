@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+</style>
+</head>
+<body>
+<input id='html-el' type='button' value='HTML事件处理程序' onclick='console.log(event.type)'/>
+<input id='html-el2' type='button' value='HTML事件处理程序2' onclick='console.log(&quot;rock&quot;)'/>
+<input id='html-el3' type='button' value='HTML事件处理程序3' onclick='showMessage()' />
+<input id='html-el4' type='button' value='HTML事件处理程序4' onclick='console.log(this.value)' />
+<input id='html-el5' type='button' value='HTML事件处理程序5' />
+<input id='html-el6' type='button' value='HTML事件处理程序6' />
+
+<script>
+function showMessage(){
+console.log('showMessage function');
+}
+
+var html=document.documentElement;
+var body=document.body;
+var htmlel5=document.getElementById('html-el5');
+var htmlel6=document.getElementById('html-el6');
+
+htmlel5.onclick=function(){
+    console.log(this.id);
+}
+htmlel5.onclick=function(){ //覆盖
+    console.log('again'+this.id);
+}
+
+function delme(){
+    console.log('PLEASE DEL ME');
+}
+
+htmlel6.addEventListener('click',function rock(){
+        console.log('this is input');
+        },false);
+htmlel6.addEventListener('click',delme,false);
+htmlel6.removeEventListener('click',delme,false);
+
+
+html.addEventListener('click',function(){
+        console.log('this is html');
+        },false);
+
+body.addEventListener('click',function(){
+        console.log('this is body');
+        },true);
+
+//跨浏览器的事件处理程序
+var EventUtil={
+addHandler:function(element,type,handler){
+    if(element.addEventListener){
+        element.addEventListener(type,handler,false);
+    } else if (element.attachEvent){
+        element.attachEvent('on'+type,handler);
+    }else{
+        element['on'+type] = handler;
+    }},
+removeHandler:function(element,type,handler){
+    if(element.removeEventListener){
+        element.removeEventListener(type,handler,false);
+    } else if(element.detachEvent){
+        element.detachEvent('on'+type,handler);
+    } else {
+        element['on'+type]=null;
+    }
+    }
+
+};
+
+</script>
+</body>
+</html>

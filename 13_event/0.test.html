@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+</style>
+</head>
+<body>
+<input id='html-el' type='button' value='HTML事件处理程序' onclick='console.log(event.type)'/>
+<input id='html-el2' type='button' value='HTML事件处理程序2' onclick='console.log(&quot;rock&quot;)'/>
+<input id='html-el3' type='button' value='HTML事件处理程序3' onclick='showMessage()' />
+<input id='html-el4' type='button' value='HTML事件处理程序4' onclick='console.log(this.value)' />
+<input id='html-el5' type='button' value='HTML事件处理程序5' />
+<input id='html-el6' type='button' value='HTML事件处理程序6' />
+
+<script>
+function showMessage(){
+console.log('showMessage function');
+}
+
+var html=document.documentElement;
+var body=document.body;
+var htmlel5=document.getElementById('html-el5');
+var htmlel6=document.getElementById('html-el6');
+
+console.log(navigator.userAgent);
+htmlel6.attachEvent('onclick',function(){
+        console.log(this===window);
+        });
+htmlel6.attachEvent('onclick',function(){
+        console.log('it works?')
+        });
+htmlel5.onclick=function(){
+    console.log(this.type);
+}
+</script>
+</body>
+</html>
