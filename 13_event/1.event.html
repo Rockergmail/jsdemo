@@ -11,6 +11,8 @@
 <input id='html-el4' type='button' value='HTML事件处理程序4' onclick='console.log(this.value)' />
 <input id='html-el5' type='button' value='HTML事件处理程序5' />
 <input id='html-el6' type='button' value='HTML事件处理程序6' />
+<input id='html-el7' type='button' value='HTML-DOM0事件对象' />
+<input id='html-el8' type='button' value='HTML-DOM2事件对象' />
 
 <script>
 function showMessage(){
@@ -21,6 +23,9 @@ var html=document.documentElement;
 var body=document.body;
 var htmlel5=document.getElementById('html-el5');
 var htmlel6=document.getElementById('html-el6');
+var htmlel7=document.getElementById('html-el7');
+var htmlel8=document.getElementById('html-el8');
+
 
 htmlel5.onclick=function(){
     console.log(this.id);
@@ -40,13 +45,13 @@ htmlel6.addEventListener('click',delme,false);
 htmlel6.removeEventListener('click',delme,false);
 
 
-html.addEventListener('click',function(){
-        console.log('this is html');
-        },false);
-
-body.addEventListener('click',function(){
-        console.log('this is body');
-        },true);
+//html.addEventListener('click',function(){
+//        console.log('this is html');
+//        },false);
+//
+//body.addEventListener('click',function(){
+//        console.log('this is body');
+//        },true);
 
 //跨浏览器的事件处理程序
 var EventUtil={
@@ -69,6 +74,26 @@ removeHandler:function(element,type,handler){
     }
 
 };
+
+//事件对象
+htmlel7.onclick=function(event){
+    console.log(event.type);
+    console.log(event.currentTarget === this);
+    console.log(event.target === this);
+    console.log(event);
+}
+
+//htmlel8.addEventListener('click',function(event){
+//    console.log(event.type);
+//    console.log(event.bubbles);
+//    console.log(event); //为什么这里的current是null，而不是那个input元素
+//        });
+
+document.body.onclick=function(event){
+    console.log(event.currentTarget===document.body);
+    console.log(this === document.body);
+    console.log(event.target === document.getElementById('htmlel8'));
+}
 
 </script>
 </body>
