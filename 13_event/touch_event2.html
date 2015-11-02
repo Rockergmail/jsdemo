@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TouchEvent测试</title>
+        <meta charset="gbk">
+        <style>
+        #box2{position: absolute;background: yellow;padding:10px;border:3px solid red;top:-12.5px;height:25px;width:70px;text-align:center;line-height: 25px;}
+        #track{position:absolute;left:25%;top:25%;width:476px;height:25px;border-bottom: 1px solid red;}
+        </style>
+    </head>
+ <body>
+<div id="track" class="track">
+    <div id='box1'></div>
+    <div id="box2" style="left:0; top:0">Drag Me</div>
+</div>
+<script>
+/*
+//我的方法
+    var oBox=document.querySelector('#box2'),
+        oTrack=document.querySelector('#track');
+        delLeft=oTrack.offsetLeft;
+        iLeft=0,iAll=380;
+
+    window.addEventListener('load',function(){
+        oBox.addEventListener('touchmove',function(e){
+            var oTouch=e.changedTouches[0];
+            iLeft=oTouch.clientX-delLeft;
+            if(iLeft<0) iLeft=0;
+            if(iLeft>380) iLeft=380;
+            this.style.left=iLeft+'px';
+            this.innerHTML=Math.round(iLeft/380*100)+'%';
+            e.preventDefault();
+        },false);
+    },false);
+ */
+
+/*
+ //别人的答案
+ window.addEventListener('load', function(){
+ 
+    var box2 = document.getElementById('box2'),
+    boxleft, // left position of moving box
+    startx, // starting x coordinate of touch point
+    dist = 0, // distance traveled by touch point
+    touchobj = null // Touch object holder
+ 
+    box2.addEventListener('touchstart', function(e){
+        touchobj = e.changedTouches[0] // reference first touch point
+        boxleft = parseInt(box2.style.left) // get left position of box
+        startx = parseInt(touchobj.clientX) // get x coord of touch point
+        e.preventDefault() // prevent default click behavior
+    }, false)
+ 
+    box2.addEventListener('touchmove', function(e){
+        touchobj = e.changedTouches[0] // reference first touch point for this event
+        var dist = parseInt(touchobj.clientX) - startx // calculate dist traveled by touch point
+        // move box according to starting pos plus dist
+        // with lower limit 0 and upper limit 380 so it doesn't move outside track:
+        box2.style.left = ( (boxleft + dist > 380)? 380 : (boxleft + dist < 0)? 0 : boxleft + dist ) + 'px'
+        e.preventDefault()
+    }, false)
+ 
+}, false)
+*/
+
+
+    var oBox=document.querySelector('#box2'),
+        startx=0,
+        iLeft=0,
+        iAll=380,
+        //oTouch=null,
+        yourLeft=0;
+
+        oBox.addEventListener('touchstart',function(e){
+            var oTouch=e.changedTouches[0];
+            startx=oTouch.clientX;
+            yourLeft=this.offsetLeft;
+            e.preventDefault();
+        },false);
+
+        oBox.addEventListener('touchmove',function(e){
+            var oTouch=e.changedTouches[0],dist;
+            iLeft=oTouch.clientX-startx;
+            dist=(iLeft+yourLeft>380)?380:(iLeft+yourLeft<0)?0:(iLeft+yourLeft);
+            this.style.left=dist+'px';
+            this.innerHTML=Math.round(dist/380*100)+'%';
+            e.preventDefault();
+        },false);
+
+//如果算法有重复的部分，要检查一下后面几次会怎样！不要只想到第一种的情况。
+</script>
+</body>
+</html>

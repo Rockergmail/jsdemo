@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+*{margin:0px;padding:0px;}
+</style>
+</head>
+<body>
+	<canvas id='myCanvas' width='300' height='300' style='background-color:#333'></canvas>
+<script>
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var radius=canvas.width/2;
+ctx.translate(radius,radius);  //change to new (0,0) to old (50,50)
+radius=radius*0.9;
+//setInterval(drawClock,1000);
+drawClock();
+
+function drawClock(){
+	drawFace();
+	drawNumbers();
+	drawTime();
+	setInterval(drawTime,1000);
+}
+
+function drawFace(){
+	var gdt;
+	//draw the background
+	ctx.beginPath();
+	ctx.fillStyle = "white";
+	ctx.arc(0,0,130,0,2*Math.PI);
+	ctx.fill();
+
+	//draw the center point
+	ctx.beginPath();
+	ctx.fillStyle='rgba(255,0,0,.3)';
+	ctx.arc(0,0,radius*0.1,0,2*Math.PI);
+	ctx.fill();
+
+	//draw the outline
+	ctx.beginPath();
+	gdt=ctx.createRadialGradient(0,0,radius*0.95,0,0,radius*1.05);
+	gdt.addColorStop(0,'#333');
+	gdt.addColorStop(0.5,'white');
+	gdt.addColorStop(1,'#333');
+	ctx.lineWidth=radius*0.1;
+	ctx.strokeStyle=gdt;
+	ctx.arc(0,0,radius,0,2*Math.PI);
+	ctx.stroke();
+}
+
+function drawNumbers(){
+	ctx.font = radius*0.15 + "px arial";
+    ctx.textBaseline="middle";
+    ctx.textAlign="center";
+    ctx.fillStyle='rgba(255,0,0,.3)';
+
+    //effect A
+    // for(var i=1;i<13;i++){
+    // 	ctx.rotate(Math.PI/6*i);
+    // 	ctx.translate(0,-0.85*radius);
+	   //  ctx.fillText(i.toString(),0,0);
+	   //  ctx.translate(0,0.85*radius);
+	   //  ctx.rotate(-Math.PI/6*i);
+    // }
+
+    //effect B
+    for(var i=1;i<13;i++){
+    	ctx.beginPath();
+    	ctx.rotate(Math.PI/6*i);   //center , rotate to 
+    	ctx.translate(0,-0.85*radius);  //translate
+    	ctx.rotate(-Math.PI/6*i);	//rotate to straight
+	    ctx.fillText(i.toString(),0,0);  //fill text
+	    ctx.rotate(Math.PI/6*i);	//In contrast
+	    ctx.translate(0,0.85*radius);
+	    ctx.rotate(-Math.PI/6*i);
+    }
+}
+
+function drawHands(pos,length,width){
+	ctx.beginPath();
+	ctx.strokeStyle='rgba(0,255,0,.3)';
+	ctx.lineWidth=width;
+	ctx.lineCap='round';
+	ctx.moveTo(0,0);
+	ctx.rotate(pos);
+	ctx.lineTo(0,-length);
+	ctx.stroke();
+	ctx.rotate(-pos);
+	ctx.save();
+}
+
+function drawTime(){
+	var now=new Date();
+	var hour=now.getHours();
+	var minute=now.getMinutes();
+	var second=now.getSeconds();
+	//hour
+	hour=hour%12;
+	hour=(hour*Math.PI/6)+(minute*Math.PI/(6*60))+(second*Math.PI/(360*60));
+	drawHands(hour, radius*0.5, radius*0.07);
+	//minute
+	minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
+	drawHands(minute, radius*0.8, radius*0.07);
+	//second
+	second=second*Math.PI/30;
+	drawHands(second, radius*0.9, radius*0.02);
+}
+
+</script>
+</body>
+</html>

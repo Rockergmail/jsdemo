@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+*{margin:0px;padding:0px;}
+#myCanvas2{position: absolute;left: 0px;top:0px;}
+</style>
+</head>
+<body>
+	<canvas id='myCanvas' width='300' height='300' style='background-color:#333'></canvas>
+	<canvas id='myCanvas2' width='300' height='300' style='background-color:ttansparent'></canvas>
+<script>
+// 1.排错思维，知道不是这个问题了，就再回到远点，扩大范围找问题。
+// 2.这里是因为覆盖了，所以可以重画，找了方法，可以用clearReact来清除再画
+// 3.看看clear和覆盖的性能影响
+// 4.部分clear的话，用多个canvas来处理
+
+var canvas2 = document.getElementById("myCanvas2");
+var ctx2 = canvas2.getContext("2d");
+ctx2.translate(150,150);
+
+//=========================================================
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var radius=canvas.width/2;
+ctx.translate(radius,radius);  //change to new (0,0) to old (50,50)
+radius=radius*0.9;
+drawClock();
+
+function drawClock(){
+	drawFace();
+	drawNumbers();
+	drawTime();
+	setInterval(drawTime,10);
+}
+
+function drawFace(){
+	var gdt;
+	//draw the background
+	ctx.beginPath();
+	ctx.fillStyle = "white";
+	ctx.arc(0,0,130,0,2*Math.PI);
+	ctx.fill();
+
+	//draw the center point
+	ctx.beginPath();
+	ctx.fillStyle='rgba(255,0,0,.3)';
+	ctx.arc(0,0,radius*0.1,0,2*Math.PI);
+	ctx.fill();
+
+	//draw the outline
+	ctx.beginPath();
+	gdt=ctx.createRadialGradient(0,0,radius*0.95,0,0,radius*1.05);
+	gdt.addColorStop(0,'#333');
+	gdt.addColorStop(0.5,'white');
+	gdt.addColorStop(1,'#333');
+	ctx.lineWidth=radius*0.1;
+	ctx.strokeStyle=gdt;
+	ctx.arc(0,0,radius,0,2*Math.PI);
+	ctx.stroke();
+}
+
+function drawNumbers(){
+	ctx.font = radius*0.15 + "px arial";
+    ctx.textBaseline="middle";
+    ctx.textAlign="center";
+    ctx.fillStyle='rgba(255,0,0,.3)';
+
+    //effect A
+    // for(var i=1;i<13;i++){
+    // 	ctx.rotate(Math.PI/6*i);
+    // 	ctx.translate(0,-0.85*radius);
+	   //  ctx.fillText(i.toString(),0,0);
+	   //  ctx.translate(0,0.85*radius);
+	   //  ctx.rotate(-Math.PI/6*i);
+    // }
+
+    //effect B
+    for(var i=1;i<13;i++){
+    	ctx.beginPath();
+    	ctx.rotate(Math.PI/6*i);   //center , rotate to 
+    	ctx.translate(0,-0.85*radius);  //translate
+    	ctx.rotate(-Math.PI/6*i);	//rotate to straight
+	    ctx.fillText(i.toString(),0,0);  //fill text
+	    ctx.rotate(Math.PI/6*i);	//In contrast
+	    ctx.translate(0,0.85*radius);
+	    ctx.rotate(-Math.PI/6*i);
+    }
+}
+
+function drawHands(pos,length,width){
+	ctx2.beginPath();
+	ctx2.strokeStyle='rgba(0,255,0,.3)';
+	ctx2.lineWidth=width;
+	ctx2.lineCap='round';
+	ctx2.moveTo(0,0);
+	ctx2.rotate(pos);
+	ctx2.lineTo(0,-length);
+	ctx2.stroke();
+	ctx2.rotate(-pos);
+	ctx2.save();
+}
+
+function drawTime(){
+	ctx2.clearRect(-canvas2.width/2,-canvas2.height/2,canvas2.width,canvas2.height);
+	var now=new Date();
+	var hour=now.getHours();
+	var minute=now.getMinutes();
+	var second=now.getSeconds();
+	var MSecond=now.getMilliseconds();
+	//hour
+	hour=hour%12;
+	hour=(hour*Math.PI/6)+(minute*Math.PI/(6*60))+(second*Math.PI/(360*60));
+	drawHands(hour, radius*0.5, radius*0.07);
+	//minute
+	minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
+	drawHands(minute, radius*0.8, radius*0.07);
+	//second
+	second=second*Math.PI/30+MSecond*Math.PI/30000;
+	drawHands(second, radius*0.9, radius*0.02);
+}
+</script>
+</body>
+</html>

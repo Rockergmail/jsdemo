@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+*{margin:0px;padding:0px;}
+#x{width:200px;margin-left:1em;text-align: center}
+#y{width:1em;height:100px;line-height: 100px;text-align:center;float:left;}
+#myCanvas,#info{float:left}
+#info{text-align: center; }
+</style>
+</head>
+<body>
+	<p id='x'>x</p>
+	<p id='y'>y</p>
+	<!-- <iframe id='yourframe' src='draw.html' frameborder="0" style="border:0;overflow:hidden;width:400px;height:120px;" ></iframe> -->
+			<canvas id="myCanvas" width="200" height="100"
+			style="border:1px solid #000000;"></canvas>
+			<p id='info'></p>
+	<img src='doc.png' id='doc'/>
+<script>
+var canvas = document.getElementById("myCanvas");
+var yourinfo=document.getElementById('info');
+var yourframe=document.getElementById('yourframe');
+var imgdoc=document.getElementById('doc');
+var ctx = canvas.getContext("2d");
+
+ctx.fillStyle = "#FF0000";
+ctx.fillRect(0,0,150,75);
+ctx.moveTo(0,0);
+ctx.lineTo(200,100);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(95,50,40,0,2*Math.PI);
+ctx.stroke();
+
+var grd=ctx.createLinearGradient(0,0,150,0);
+grd.addColorStop(0,"red");
+grd.addColorStop(1,"white");
+ctx.fillStyle=grd;
+ctx.fillRect(10,10,150,80);
+
+ctx.fillStyle='#fff';
+ctx.font = "30px Arial";
+ctx.textBaseline='top'; // default is "bottom"
+ctx.fillText("Hello World", canvas.width/2, canvas.height/2);
+// ps ,it draws on the top right;
+ctx.strokeText("Hello World", canvas.width/2, canvas.height/2);
+ctx.textAlign = "center";
+
+imgdoc.onload=function(){
+	var pattern=ctx.createPattern(this,'repeat');
+	ctx.fillStyle=pattern;
+	ctx.fill();
+}
+
+canvas.addEventListener('mousemove',function(e){
+	yourinfo.innerHTML='('+(e.clientX-16)+'.'+(e.clientY-16)+')';
+},false);
+
+canvas.addEventListener('mouseout',function(e){
+	yourinfo.innerHTML='';
+},false);
+
+//ctx  not release but save, using beginPath() to start new .
+</script>
+</body>
+</html>

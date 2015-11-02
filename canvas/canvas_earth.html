@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+*{margin:0px;padding:0px;}
+</style>
+</head>
+<body>
+	<canvas id='canvas' width='300' height='300' style='background:#333'></canvas>
+<script>
+var sun=new Image();
+var earth=new Image();
+var moon=new Image();
+
+init();
+
+function init(){
+	moon.src='images/moon.png';
+	earth.src='images/earth.png';
+	sun.src='images/sun.png';
+	earth.onload=function(){draw();}
+}
+
+function draw(){
+	var ctx=document.getElementById('canvas').getContext('2d');
+	ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  	ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+
+  	ctx.translate(150,150);
+  	ctx.save();
+
+  	//draw earth
+  	var time=new Date();
+
+  	ctx.rotate(((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds());
+  	ctx.translate(105,0);
+  	ctx.drawImage(earth,-12.5,0);
+  	ctx.rect(0,0,50,24);
+  	ctx.fill();
+
+  	//draw moon
+}
+</script>
+</body>
+</html>

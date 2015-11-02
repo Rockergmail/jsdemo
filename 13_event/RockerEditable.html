@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+ 
+#todolist{
+    width:200px;
+    height: 200px;
+    font:normal 13px Arial;
+    background:lightyellow;
+    border:1px dashed gray;
+    overflow-y:scroll;
+    padding:5px;
+}
+ 
+#todolist ol{
+    margin-left:-15px;
+}
+ 
+#todolist li{
+    border-bottom:1px solid gray;
+    margin-bottom:8px;
+}
+ 
+ 
+</style>
+ </head>
+<body>
+ 
+<div id="todolist" contenteditable="true">
+<div contenteditable="false"><b>Edit To-Do List (auto saved):</b></div>
+    <ol>
+    <li>Take out garbage</li>
+    <li>Finish report</li>
+    <li>Set alarm to 6am</li>
+    </ol>
+</div>
+<a href="#" onClick="resetlist();return false">Reset To Do List</a>
+ 
+<script type="text/javascript">
+    var container=document.querySelector('#todolist');
+    var defaultHTML=container.innerHTML;
+    if(localStorage.neirong){
+        container.innerHTML=localStorage.neirong;   
+    }
+
+    function resetlist(){
+        console.log('reseting');
+        localStorage.neirong=defaultHTML;
+        container.innerHTML=defaultHTML;
+    }
+
+    container.addEventListener('keyup',autoSave,false);
+
+    function autoSave(){
+        console.log('autoSaving');
+        localStorage.neirong=container.innerHTML;
+    }
+
+</script>
+</body>
+</html>

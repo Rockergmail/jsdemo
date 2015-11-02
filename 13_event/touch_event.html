@@ -1,0 +1,79 @@
+<!-- HTML5 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TouchEvent测试</title>
+        <meta charset="gbk">
+        <style>#box1{background: yellow;width:200px;height:200px;}</style>
+    </head>
+    <body>
+    <div class="box" id="box1">
+    <h3> Touch Me! </h3>
+    </div>
+     
+    <h3 id="statusdiv">Status</h3>
+    <p id='info'></p>
+    <script>
+    var oDiv=document.querySelector('#box1'),
+        oStatus=document.querySelector('#statusdiv');
+        oInfo=document.querySelector('#info'),
+        startx=0,
+        dist=0;
+
+    console.log(oDiv);
+    console.log(oStatus);
+    oDiv.addEventListener('touchstart',function(e){
+        var oThis=e.changedTouches[0];
+        startx=parseInt(oThis.clientX);
+        oStatus.innerHTML='Status : touchstart';
+        oInfo.innerHTML='clientX : '+startx;
+        e.preventDefault();
+        console.log('=======touchstart=========');
+        console.log("touches");console.log(e.touches);
+        console.log("target");console.log(e.targetTouches);
+        console.log("change");console.log(e.changedTouches);
+        //去掉默认行为：选中、放大、缩小、滚动
+    },false);
+
+    oDiv.addEventListener('touchmove',function(e){
+        var oThis=e.changedTouches[0];
+        dist=oThis.clientX-startx;
+        oStatus.innerHTML='Status : touchmove';
+        oInfo.innerHTML='distance : '+dist;
+        e.preventDefault();
+        console.log('=======touchmove=========');
+        console.log("touches");console.log(e.touches);
+        console.log("target");console.log(e.targetTouches);
+        console.log("change");console.log(e.changedTouches);
+        },false);
+
+    oDiv.addEventListener('touchend',function(e){
+        var oThis=e.changedTouches[0];
+        oStatus.innerHTML='Status : touchend';
+        oInfo.innerHTML='you end at : '+oThis.clientX;
+        e.preventDefault();
+        console.log('=======touchend=========');
+        console.log("touches");console.log(e.touches);
+        console.log("target");console.log(e.targetTouches);
+        console.log("change");console.log(e.changedTouches);
+    },false);
+        
+        //获取touchlist的三种方法：
+//         touches: A list of information for every finger currently touching the screen
+        // targetTouches: Like touches, but is filtered to only the information for finger touches that started out within the same node
+        // changedTouches: A list of information for every finger involved in the event (see below) To better understand what might be in these lists, let’s go over some examples quickly
+        // They vary in the following pattern:
+
+        // When I put a finger down, all three lists will have the same information. It will be in changedTouches because putting the finger down is what caused the event
+        // When I put a second finger down, touches will have two items, one for each finger. targetTouches will have two items only if the finger was placed in the same node as the first finger. changedTouches will have the information related to the second finger, because it’s what caused the event
+        // If I put two fingers down at exactly the same time, it’s possible to have two items in changedTouches, one for each finger
+        // If I move my fingers, the only list that will change is changedTouches and will contain information related to as many fingers as have moved (at least one).
+        // When I lift a finger, it will be removed from touches, targetTouches and will appear in changedTouches since it’s what caused the event
+        // Removing my last finger will leave touches and targetTouches empty, and changedTouches will contain information for the last finger
+
+        //touches记录的是所有触摸屏幕上的手指（至少一只在目标元素上）相关信息
+        //targetTouches记录的是所有在目标元素上的手指相关信息
+        //changedTouches记录的是发生改变的那个手指的相关信息。在松开手指之后，touches和targetTouches都会删除这个手指的信息，而changedTouches会有这个手指的信息，因为是这个手指发生了改变。
+    </script>
+    </body>
+</html>
