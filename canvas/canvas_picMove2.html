@@ -14,14 +14,13 @@ var img = new Image();
 // User Variables - customize these to change the image being scrolled, its
 // direction, and the speed.
 
-//img.src = 'images/park.jpg';
 img.src = 'images/park.jpg';
 var CanvasXSize = 800;
 var CanvasYSize = 200;
 var speed = 1; //lower is faster
 var scale = 1.05;
 var y = -4.5; //vertical offset
-
+var ctx=document.getElementById('canvas').getContext('2d');
 // Main program
 
 var dx = 0.75;
@@ -30,7 +29,6 @@ var imgH;
 var x = 0;
 var clearX;
 var clearY;
-var ctx;
 
 img.onload = function() {
     imgW = img.width*scale;
@@ -46,27 +44,16 @@ img.onload = function() {
     return setInterval(draw, speed);
 }
 
-function draw() {
-    //Clear Canvas
-    ctx.clearRect(0,0,clearX,clearY);
-    //If image is <= Canvas Size
-    if (imgW <= CanvasXSize) {
-        //reset, start from beginning
-        if (x > (CanvasXSize)) { x = 0; }
-        //draw aditional image
-        if (x > (CanvasXSize-imgW)) { ctx.drawImage(img,x-CanvasXSize+1,y,imgW,imgH); }
-    }
-    //If image is > Canvas Size
-    else {
-        //reset, start from beginning
-        if (x > (CanvasXSize)) { x = CanvasXSize-imgW; }
-        //draw aditional image
-        if (x > (CanvasXSize-imgW)) { ctx.drawImage(img,x-imgW+1,y,imgW,imgH);}
-    }
-    //draw image
+function draw(){
+
+    	if (x > CanvasXSize-imgW) { ctx.drawImage(img,x-imgW+1,y,imgW,imgH); }
+        if (x > CanvasXSize) {x=CanvasXSize-imgW}
+        //坐标的理解：drawImage(img,图片左上角在的x,图片左上角在的y)
+//复位：什么时候？就是重复部分立刻重置x
+//延长：什么位置？x-imageW
+
     ctx.drawImage(img,x,y,imgW,imgH);
-    //amount to move
-    x += dx;
+	x += dx;
 }
 </script>
 </body>
