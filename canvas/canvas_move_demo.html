@@ -1,0 +1,159 @@
+<html>
+<head>
+<style>
+
+#windowcontainer {position:relative; height:160px;}
+h1 {font-size: 100%}
+h2 {font-size: 80%}
+h3 {font-size: 75%}
+h1, h2, h3 {margin: 5px}
+body {background-color: 8080C0; }
+p {padding: 0; margin: 0;}
+.gameLayer {position: absolute; top: 0px; left: 0px;}
+#scoreLayer {font-family: arial; font-weight: bold; color: #FFFFFF; left: 10px;}
+#lifeLayer {font-family: arial; font-weight: bold; color: red; left: 150px;}
+</style>
+<script>
+var img = new Image();   // Create new Image object
+img.src = 'images/bg.png'; // Set source path
+knight = new Image(25,30);
+knight.src = 'images/player.png'
+//img.onload = function(){
+  // execute drawWindow statements here
+//}
+var knightObj = {x: 30, y:60};
+var knifeObj = {x: 0, y: 0};
+var knife = new Image();
+knife.src = 'images/knife.gif';
+
+knifeTimer = null;
+
+function init(){
+	//ctx2.drawImage(img, 0, 0)
+	tryAnim(320);
+	tryAnim(0);
+	drawKnight();
+}
+
+function tryAnim(i){
+	var ctx2 = document.getElementById('bgLayer').getContext("2d");
+	if(i > -322){
+		//ctx2.clearRect(0,0,200,300);
+		ctx2.save();
+		ctx2.drawImage(img, i, 0)
+		setTimeout("tryAnim("+(i-2)+")",10);
+		ctx2.restore();
+	}
+	else {
+		ctx2.save();
+		setTimeout("tryAnim(320)",10);
+		ctx2.restore();
+	}
+}
+
+function drawKnight(){
+	var ctx = document.getElementById('playerLayer').getContext("2d");
+	ctx.save();
+	ctx.drawImage(knight, knightObj.x, knightObj.y);
+	//setTimeout(drawKnight,300);
+	ctx.restore();
+
+}
+
+function moveKnight(dir){
+	var ctx = document.getElementById('playerLayer').getContext("2d");
+	ctx.clearRect(knightObj.x,knightObj.y,25,30);
+	if(dir == 'up'){
+		if(knightObj.y >30){
+			knightObj.y-=10;
+		}
+	}
+	if(dir == 'down'){
+		if(knightObj.y < 120){
+			knightObj.y+=10;
+			}
+	}
+	drawKnight();
+}
+
+function drawKnife(){
+
+	var ctx = document.getElementById('weaponLayer').getContext("2d");
+	ctx.clearRect(0,0,300,160);
+	ctx.save();
+	ctx.drawImage(knife, knifeObj.x, knifeObj.y);
+	setTimeout(drawKnife,300);
+	ctx.restore();
+
+}
+
+function moveKnife(){
+		if(knifeObj.x < 300){
+			knifeObj.x+=10;
+			drawKnife();
+			knifeTimer = setTimeout(moveKnife, 30);
+		}
+}
+
+function shootKnife(x,y){
+	knifeObj.x = x;
+	knifeObj.y = y;
+	moveKnife();
+}
+function doKeyDown(evt){
+	//alert(evt.keyCode);
+	if(evt.keyCode == 38) {
+		moveKnight('up')
+	}
+	if(evt.keyCode == 40) {
+		moveKnight('down')
+	}
+	if (evt.keyCode == 32){
+		clearTimeout(knifeTimer)
+		shootKnife(knightObj.x+5, knightObj.y+5);
+	}
+}
+
+function drawDagger(){
+
+}
+
+window.addEventListener('keydown',doKeyDown,true)
+</script>
+<title>Canvas Adventure</title>
+<script src="/puer/js/reload.js"></script></head>
+<body onload="init()" >
+<div id='gametitle'>
+	<h1>Canvas Adventure</h1>
+	<h2>version 0.02</h2>
+	<h3>by <a href="mailto:triptych@gmail.com">Andrew Wooldridge</a></h3>
+</div>
+<div id='windowcontainer'>
+<canvas id="bgLayer" class="gameLayer" height="160" width="300"></canvas>
+
+<canvas id="weaponLayer" class="gameLayer" height="160" width="300"></canvas>
+<canvas id="playerLayer" class="gameLayer" height="160" width="300">
+Your browser does not support canvas tag. Go get FireFox 1.5beta
+
+</canvas>
+
+
+
+
+<div id="scoreLayer" class="gameLayer">
+	Score: 000000
+</div>
+<div id="lifeLayer" class="gameLayer">
+	Life: &hearts; &hearts; &hearts; &hearts; &hearts; &hearts;
+</div>
+
+</div>
+
+<div id='ctrlpanel'>
+<p>Arrow keys move up and down.</p>
+<p>Spacebar shoots dagger</p>
+</div>
+</body>
+
+
+</html>

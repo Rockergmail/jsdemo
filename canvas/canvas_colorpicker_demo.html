@@ -1,0 +1,98 @@
+<html>
+<head>
+	<style>
+		#canvas{border:1px solid black;}
+		#zoom{border:1px solid red;}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="600" height="300"></canvas>
+	<canvas id="zoom" width="300" height="227"></canvas>
+	<div id="color" style="width: 200px; height: 50px; float: left; background: rgb(170, 180, 189);">rgba(170,180,189,255)</div><br/>
+	<div>
+<label for="smoothbtn">
+  <input type="checkbox" name="smoothbtn" checked="checked" id="smoothbtn">
+  Enable image smoothing
+</label>
+</div>
+	<input type='button' value='changePixel' id='cp'/><br/>
+	<input type='button' value='invert' id='invert'/><br/>
+	<input type='button' value='grayscale' id='grayscale'/>
+<script>
+var img = new Image();
+img.src = 'images/hema.jpg';
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+img.onload = function() {
+  ctx.drawImage(img, 0, 0);
+  img.style.display = 'none';
+};
+var color = document.getElementById('color');
+
+function pick(event) {
+  var x = event.layerX;
+  var y = event.layerY;
+  var pixel = ctx.getImageData(x, y, 1, 2);
+  var data = pixel.data;
+  console.log(data);
+  var rgba = 'rgba(' + data[0] + ',' + data[1] +
+             ',' + data[2] + ',' + data[3] + ')';
+  color.style.background =  rgba;
+  color.textContent = rgba;
+
+  //zoom IN
+
+
+}
+
+var cp=document.getElementById('cp');
+var invert=document.getElementById('invert');
+var grayscale=document.getElementById('grayscale');
+
+cp.onclick=function(){
+	var yourdata=ctx.getImageData(0,0,100,100);
+	ctx.putImageData(yourdata,300,150,120,120,120,120);
+}
+
+
+
+function invertFn(){
+	var olddata=ctx.getImageData(0,0,canvas.width,canvas.height);
+	var yourdata=olddata.data;
+	for(var i=0;i<yourdata.length;i+=4){
+		yourdata[i]=255-yourdata[i];
+		yourdata[i+1]=255-yourdata[i+1];
+		yourdata[i+2]=255-yourdata[i+2];
+	}
+	ctx.putImageData(olddata,0,0);
+}
+
+function grayscaleFn(){
+	var olddata=ctx.getImageData(0,0,canvas.width,canvas.height);
+	var yourdata=olddata.data;
+	for(var i=0;i<yourdata.length;i+=4){
+		var avg=(yourdata[i]+yourdata[i+1]+yourdata[i+2])/3;
+		yourdata[i]=avg;
+		yourdata[i+1]=avg;
+		yourdata[i+2]=avg;
+	}
+	ctx.putImageData(olddata,0,0);
+}
+
+ var smoothbtn = document.getElementById('smoothbtn');
+  var toggleSmoothing = function(event) {
+    zoomctx.imageSmoothingEnabled = this.checked;
+    zoomctx.mozImageSmoothingEnabled = this.checked;
+    zoomctx.webkitImageSmoothingEnabled = this.checked;
+    zoomctx.msImageSmoothingEnabled = this.checked;
+  };
+  smoothbtn.addEventListener('change', toggleSmoothing);
+
+canvas.addEventListener('mousemove', pick);
+invert.addEventListener('click',invertFn,false);
+grayscale.addEventListener('click',grayscaleFn,false);
+
+console.log(canvas.toDataURL('image/png'));
+</script>
+</body>
+</html>

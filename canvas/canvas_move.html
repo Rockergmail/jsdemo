@@ -1,0 +1,144 @@
+<html>
+<head>
+<style>
+
+#windowcontainer {position:relative; height:160px;}
+h1 {font-size: 100%}
+h2 {font-size: 80%}
+h3 {font-size: 75%}
+h1, h2, h3 {margin: 5px}
+body {background-color: 8080C0; }
+p {padding: 0; margin: 0;}
+.gameLayer {position: absolute; top: 0px; left: 0px;}
+#scoreLayer {font-family: arial; font-weight: bold; color: #FFFFFF; left: 10px;}
+#lifeLayer {font-family: arial; font-weight: bold; color: red; left: 150px;}
+</style>
+<title>Canvas Adventure</title>
+</head>
+<body onload="init()" >
+<div id='gametitle'>
+	<h1>Canvas Adventure</h1>
+	<h2>version 0.02</h2>
+	<h3>by <a href="mailto:triptych@gmail.com">Andrew Wooldridge</a></h3>
+</div>
+<div id='windowcontainer'>
+<canvas id="bgLayer" class="gameLayer" height="160" width="300"></canvas>
+
+<canvas id="knifeLayer" class="gameLayer" height="160" width="300"></canvas>
+
+<canvas id="playerLayer" class="gameLayer" height="160" width="300">
+Your browser does not support canvas tag. Go get FireFox 1.5beta
+
+</canvas>
+
+<div id="scoreLayer" class="gameLayer">
+	Score: 000000
+</div>
+<div id="lifeLayer" class="gameLayer">
+	Life: &hearts; &hearts; &hearts; &hearts; &hearts; &hearts;
+</div>
+
+</div>
+
+<div id='ctrlpanel'>
+<p>Arrow keys move up and down.</p>
+<p>Spacebar shoots dagger</p>
+</div>
+
+<script>
+var bg=new Image(),player=new Image(),knife=new Image();
+var bgLayer=document.getElementById('bgLayer').getContext('2d'),
+	playerLayer=document.getElementById('playerLayer').getContext('2d'),
+	knifeLayer=document.getElementById('knifeLayer').getContext('2d');
+	
+var bgX=0,
+	playerObj={x:30,y:60},
+	knifeObj={x:30,y:75},
+	knifeTimer=null;
+
+bg.src='images/bg.png',
+player.src='images/player.png',
+knife.src='images/knife.gif';
+
+function init(){}
+
+tryAnim(0);
+tryAnim(320);
+//第一幅过了(-320,0)怎么办？第一幅后面要有图片。所以一开始，没运动的时候，在(320,0)多画一副。
+//两幅一起移动。
+//第一幅过了(-320,0)怎么办？在(320,0）多画一副。
+//loop
+// 第一张-320~0
+// 第二张-320~320
+function tryAnim(i){
+	var bgLayer = document.getElementById('bgLayer').getContext("2d");
+	if(i > -322){
+		//bgLayer.clearRect(0,0,200,300);
+		bgLayer.save();
+		bgLayer.drawImage(bg, i, 0)
+		setTimeout("tryAnim("+(i-2)+")",10);
+		bgLayer.restore();
+	}
+	else {
+		bgLayer.save();
+		setTimeout("tryAnim(320)",10);
+		bgLayer.restore();
+	}
+}
+
+function shootKnife(){
+	knifeTimer=setInterval(function(){
+		knifeLayer.clearRect(0,0,300,300);
+		knifeLayer.drawImage(knife,knifeObj.x+=10,knifeObj.y);
+		if(knifeObj.x>300){
+		clearInterval(knifeTimer);
+		knifeObj.y=playerObj.y+15;
+		knifeObj.x=playerObj.x;
+		knifeLayer.clearRect(0,0,300,300); 
+		}
+	},30);
+}
+
+//Player
+
+player.onload=function(){
+	playerLayer.drawImage(this,playerObj.x,playerObj.y);
+}
+
+function doKeyDown(evt){
+	if(evt.keyCode == 38) {
+		movePlayer('up')
+	}
+	if(evt.keyCode == 40) {
+		movePlayer('down')
+	}
+	if (evt.keyCode == 32){
+		clearInterval(knifeTimer);
+		knifeLayer.clearRect(0,0,300,300);
+		knifeObj.x=playerObj.x;
+		knifeObj.y=playerObj.y+15;
+		knifeLayer.drawImage(knife,knifeObj.x,knifeObj.y);
+		shootKnife();
+	}	
+}
+
+function movePlayer(direction){
+	if(direction=='up'){
+		if(playerObj.y>30)
+			playerObj.y-=10;
+	}
+	else{
+		if(playerObj.y<120)
+			playerObj.y+=10;
+	}
+	playerLayer.clearRect(0,0,300,300);
+	playerLayer.drawImage(player,playerObj.x,playerObj.y);
+}
+
+window.addEventListener('keydown',doKeyDown,false);
+
+</script>
+</body>
+
+
+</html>
