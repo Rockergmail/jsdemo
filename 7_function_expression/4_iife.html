@@ -8,20 +8,20 @@
 <body>
 <script>
 //iife=immediately-invoked-function-expression
-//the kernal question is the ()
+//the kernal question is ：js解释器如何分辨是function表达式还是function声明
 
 //function(){console.log('this is IIF')}() ;
 //Uncaught SyntaxError: Unexpected token (
+//因为js解释器检测到function关键字，所以认为它是一个函数声明，函数声明必须有一个名字，所以报错。
 
 
-
-//将函数声明用()套住，就变成了函数表达式
+//将函数声明用()套住，js解释器就认为这是函数表达式
 //这种方式的好处时可以减少闭包占用的内存问题
 (function(){
 	//这里是块级作用域
 	console.log('this is IIFE')}
 )();  //it works
-//因为最外围的()意味着里面变成了表达式
+//因为前面最外围的()意味着里面变成了表达式，后面的()意味着执行表达式
 
 
 (function(){
@@ -68,18 +68,17 @@ foo();
   var a=function(){console.log('axax')}  //这种会污染变量对象，因为引用给了一个变量
 
 /*
-function () {
-  ...
-  }();
-  //语法出错：因为function时关键字，所以是函数声明，因为要有一个名字，所以会出错
-    
 	function foo() {
 	  ...
 	  }();
-	//语法出错：在声明后面的()表示分组操作符，里面必须要有内容，分租操作符是没有调用函数的功能的。
+	//语法出错：在声明后面的()表示分组操作符，里面必须要有内容，分组操作符是没有调用函数的功能的。
 
+	function foo() {
+		...
+	}(1); //函数声明成功，后面的(1)是分组操作符
+	
 	if (true) function foo() {alert(1)}
-	//语法错误，因为表示式不能以function开头
+	//语法错误，因为表达式不能以function开头
 	
 //立刻执行，必须是要function expression，所以，一般情况下，要有(function(){...})()这种形式，就时说，(function(){...})这样子就变成了函数表达式形式。这样子，编译器才能够识别到表达式，随后的()就会解释成调用。但是下面这种情况除外，因为本来就是表达式形式了
 	  */
@@ -104,7 +103,7 @@ function () {
      alert('ECMAScript');
 	 }();
 
-
+// 但最好还是用()让js解释器知道这是函数表达式，因为-和+和!等等会影响结果
 </script>
 </body>
 </html>
