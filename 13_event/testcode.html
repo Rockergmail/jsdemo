@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+</style>
+</head>
+<body onunload="alert('bye-bye')">
+<input type='button' value="eventPhase" id='yourinput' />
+<textarea placeholder="input your penis here" id='yourta'></textarea>
+<script>
+var btn=document.getElementById('yourinput'),
+    yourta=document.getElementById('yourta');
+
+//DOM2事件流
+btn.onclick=function(e){
+    console.log(e.eventPhase);
+    window.location='http://www.baidu.com';
+}  //2
+
+document.body.addEventListener('click',function(e){console.log(e.eventPhase)},true); //1
+
+document.body.onclick=function(e){
+    console.log(e.eventPhase);
+}  //3
+
+var image=document.createElement('img');
+image.src='http://www.baidu.com';
+//img如果赋值了src，不用等到appendChild就会去加载资料了
+
+
+//scroll事件
+window.onresize=function(){
+    console.log('you scroll it');
+}
+
+
+</script>
+</body>
+</html>

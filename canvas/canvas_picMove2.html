@@ -46,14 +46,20 @@ img.onload = function() {
 
 function draw(){
 
-    	if (x > CanvasXSize-imgW) { ctx.drawImage(img,x-imgW+1,y,imgW,imgH); }
-        if (x > CanvasXSize) {x=CanvasXSize-imgW}
-        //坐标的理解：drawImage(img,图片左上角在的x,图片左上角在的y)
-//复位：什么时候？就是重复部分立刻重置x
+	if (x > CanvasXSize-imgW) {ctx.drawImage(img,x-imgW+1,y,imgW,imgH); }
+    if (x > CanvasXSize) {x=CanvasXSize-imgW}
+//x的初始值是CanvasXSize-imgW
+//坐标的理解：drawImage(img,图片左上角在的x,图片左上角在的y)
+//复位：什么时候？就是重复部分立刻重置x-->x=canvasWidth
 //延长：什么位置？x-imageW
+//区分好这里的x是指canvas坐标上的，而不同于drawImage上的x
+//妙处在于：两个一起画，两个drawImage
+//x需要考虑的三个点：图片坐标的左上角、canvasWidth
+//技巧：记下初始状态、然后就移动，看到重叠的地方，就置换！
 
     ctx.drawImage(img,x,y,imgW,imgH);
-	x += dx;
+
+//	x += dx;
 }
 </script>
 </body>
