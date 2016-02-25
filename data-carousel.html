@@ -1,0 +1,134 @@
+<html>
+<head lang="zh-cmn-Hans">
+    <meta charset="UTF-8">
+    <title>红包日历--注册立即送钱</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
+    <meta name="keywords" content="红包日历,红包,日历,赚钱,手赚,锁屏,抢红包">
+    <!-- 360用GCF渲染 -->
+    <meta name="renderer" content="webkit">
+    <!-- 优先使用最新IE内核,chrome内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <!-- 禁止百度转码 -->
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <link rel="stylesheet" href="//w.qiandeer.com/qd/static/lock/assets/global.css">
+    <style>@media screen and (min-width : 640px) and (max-width : 768px){html{font-size:32px}}@media screen and (max-width : 639px) and (min-width : 424px){html{font-size:21.2px}}@media screen and (max-width : 423px) and (min-width : 414px){html{font-size:20.7px}}@media screen and (max-width : 413px) and (min-width : 384px){html{font-size:19.2px}}@media screen and (max-width : 383px) and (min-width : 375px){html{font-size:18.75px}}@media screen and (max-width : 374px) and (min-width : 360px){html{font-size:18px}}@media screen and (max-width : 359px) and (min-width : 320px){html{font-size:16px}}body,html{height:100%;min-height:480px;width:100%;background-color:white;font-family:"Microsoft YaHei", "Helvetica Neue", Helvetica, STHeiTi, sans-serif}body{font-size:16px}.btn-primary{background-color:#f7393a;font-size:0.8rem;line-height:1.2rem;padding:6px 0;border:1px solid red;border-radius:5px;-webkit-box-shadow:0 4px 0 red}.btn-primary:active{-webkit-box-shadow:0 2px 0 red;border-color:#22afe6}#text-tips{color:white;bottom:0px;width:67%;height:45%;margin:0 auto;left:0;right:0px;}.share-box{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;background-color:#000;opacity:.95}.share-slogen{position:relative;z-index:3;width:100%;display:block;margin:12px auto}.share-slogen img{display:block;margin:240px auto}.share-bg{position:fixed;z-index:2;top:0;left:0;width:100%;text-align:right}.share-bg img{margin:8px;}@media screen and (orientation: landscape){.share-slogen img{width:203px;display:block;float:right;margin:130px 120px 0 0}}#text-invitecode{color:white;font-size: 1.3rem;border:2px dotted white;padding:8px 18px;border-radius: 3px;-webkit-user-select:text;margin-top:1.1rem;}#text-invitetips{font-size:0.8rem;margin-top:0.6rem;}#btn-download{width:80%;height:1.2rem;margin-top:0.7rem;}#robin{overflow: hidden;height:375px;background: #bbb;position: relative;}#robin .show{position: absolute;top:0px;width:100%;}#robin li{background: white;height:50px;margin-bottom: 1px;padding:12px 18px;}.img-icons{width:50px;height:50px;float:left;border-radius: 50%;}.text-awardtips{float:left;margin-left:10px;}.text-name{margin-top:3px;}.text-award{margin-top:5px;font-size: 14px;color:rgb(102,102,102);}dl,dt,dd{margin:0;padding:0;}.text-time{float:right;line-height: 50px;font-size:13px;color:#999;}.text-money{color:red;}</style>
+</head>
+<body>
+<div class="content">
+    <section class="main relative">
+        <img class="header-pic" src="/static/images/hongbaorili/share/banner.png" alt="宣传页头部" width="100%">
+        <div id="text-tips" class="absolute tac">
+            <div id="text-invitecode" class="inviteNum tal fc-blue" style="min-width:45px;display:inline-block">1234567</div>
+            <p id='text-invitetips' class="db mt5 box bpc fw-b" style="min-height:18px">长按复制邀请码, 填写立送 1 元 </p>
+            <a id="btn-download" class="btn btn-primary">立即下载</a>            
+        </div>
+    </section>
+
+    <section id="robin"></section>
+
+    <div class="share-box hide">
+        <div class="share">
+            <div class="share-slogen">
+                <img src="http://w.qiandeer.com/qd/static/lock/images/open_font.png" width="203" alt="用浏览器打开">
+            </div>
+            <div class="share-bg">
+                <img src="http://w.qiandeer.com/qd/static/lock/images/open_line.png" width="98" height="219" alt="用浏览器打开">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="//w.qiandeer.com/qd/static/lock/assets/zepto.js"></script>
+<script src="//w.qiandeer.com/qd/static/lock/assets/api.js"></script>
+<script>
+    var list=[{name:"广陵",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"1分钟",icon:"5.jpg"},{name:"Lady gaga",desc:"提现 <span class='number-money'>50</span> 元话费充值",time:"2分钟",icon:"4.jpg"},{name:"黑天白地",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"3分钟",icon:"3.jpg"},{name:"怪咖",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"6分钟",icon:"1.jpg"},{name:"孤人自嘲",desc:"提现 <span class='number-money'>10</span> 元到支付宝",time:"50秒",icon:"2.jpg"},{name:"過客",desc:"提现 <span class='number-money'>50</span> 元话费充值",time:"30秒",icon:"6.jpg"},{name:"灬不见↘不散゜",desc:"提现 <span class='number-money'>50</span> 元到支付宝",time:"28秒",icon:"7.jpg"},{name:"薯片",desc:"提现 <span class='number-money'>100</span> 元到支付宝",time:"20秒",icon:"8.jpg"},{name:"沃日",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"17秒",icon:"9.jpg"},{name:"超级炒尼玛",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"8秒",icon:"10.jpg"},{name:"大爷",desc:"提现 <span class='number-money'>50</span> 元话费充值",time:"16秒",icon:"11.jpg"},{name:"Ximi",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"15秒",icon:"12.jpg"},{name:"阿伟",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"12秒",icon:"13.jpg"},{name:"不要多说",desc:"提现 <span class='number-money'>50</span> 元话费充值",time:"8秒",icon:"14.jpg"},{name:"叫你家长过来",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"7秒",icon:"15.jpg"},{name:"asdasjkd",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"6秒",icon:"16.jpg"},{name:"我想静静",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"5秒",icon:"17.jpg"},{name:"官人不要酱",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"5秒",icon:"18.jpg"},{name:"逗比213",desc:"提现 <span class='number-money'>30</span> 元到支付宝",time:"3秒",icon:"19.png"},{name:"Allan",desc:"提现 <span class='number-money'>50</span> 元话费充值",time:"2秒",icon:"20.png"}];
+    var page = 5; 
+    var initialData = '<ul class="show">';
+    for (var k = 0; k < 5; k++) {
+        initialData += '<li><img class="img-icons" src="/static/images/share/touxiang/' + list[k].icon + '"/><dl class="text-awardtips"><dt class="text-name">' + list[k].name + '</dt><dd class="text-award">' + list[k].desc + '</dd></dl><p class="text-time">' + list[k].time +'</p></li>';
+    }
+    initialData += '</ul>';
+    $(initialData).appendTo($("#robin"));
+    var liHeight = $(".show li").height() + 1;
+    var robinHeight = $("#robin").height();
+
+    dataQuery(page);
+
+    function dataQuery(page) {
+        var newData = '<ul class="show" style="top:-375px;width:100%">';
+        for (var j = 0; j < 5; j++) {
+            newData += '<li><img class="img-icons" src="/static/images/share/touxiang/' + list[page + j].icon + '"/><dl class="text-awardtips"><dt class="text-name">' + list[page + j].name + '</dt><dd class="text-award">' + list[page + j].desc + '</dd></dl><p class="text-time">' + list[page + j].time +'</p></li>';
+        }
+        newData += '</ul>';
+        $(newData).appendTo($("#robin"));
+        fireAniamtion();
+    }
+
+    function fireAniamtion() {
+        var i = 1,
+            end = 5,
+            c = null, //counter
+            show = $(".show").eq(0),
+            add = $(".show").eq(1),
+            c = setInterval(function() {
+                    showHeight = i * liHeight,
+                    addHeight = i * liHeight - robinHeight;
+
+                    show.animate({
+                        top: showHeight + "px"
+                    }, 500, 'swing');
+
+                    add.animate({
+                        top: addHeight + "px"
+                    }, 500, 'swing');
+
+                    if (i++ === end) {
+                        page = page + end;
+                        if (page === 20) {
+                                page = 0;
+                            }
+                        clearInterval(c);
+                        show.remove();
+                        dataQuery(page);
+                    };
+                }, 2000);
+    }
+
+    var iswx = /MicroMessenger/i.test(navigator.userAgent);
+    var isandroid = /android/i.test(navigator.userAgent);
+    var isios = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    var params = API.getRequest();
+
+    // url传入uic，展示邀请码
+    function showInviteCode() {
+        if (params.uic) {
+            $('.inviteNum').text(params.uic);
+            $("#text-invitecode").show();
+        } else {
+            $("#text-invitecode").hide();
+        }
+    }
+
+    //给ios带量
+    if (isios) {
+        location.href = "http://m.qianlu.com/p/c.html?c=331&m=1&u=1";
+    }
+
+    showInviteCode();
+
+    $("#btn-download").click(function() {
+        if (iswx) {
+            $(".share-box").removeClass("hide").addClass("show");
+        } else if (isandroid) {
+            //url存在cne、ver、date，就下载对应的渠道包，不存在就代表默认渠道
+            if(params.cne && params.ver && !params.date) {
+                location.href = "http://apk.qiandeer.com/hongbaorili/20160202/hbhl" + params.cne + "-" + params.ver + ".apk";
+            } else if (params.cne && params.ver && params.date){
+                location.href = "http://apk.qiandeer.com/hongbaorili/" + params.date + "/hbhl" + params.cne + "-" + params.ver + ".apk";
+            } else {
+                location.href = "http://api.hongbaorili.com/static/apk/rili/default-5.apk";
+            }
+        } else {
+            $(".share-box").removeClass("hide").addClass("show");
+        }
+    });
+</script></body></html>
